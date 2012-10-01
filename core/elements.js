@@ -5,7 +5,7 @@ with (scope()) {
     var options = shift_options_from_args(arguments);
 
     options.layout = typeof(options.layout) == 'undefined' ? ((options.target||options.into) ? false : this.default_layout) : options.layout;
-    options.target =  options.target || options.into || document.body;
+    options.target =  options.target || options.into || (this.default_target || function() { })() || document.body;
     if (typeof(options.target) == 'string') options.target = document.getElementById(options.target);
 
     if (options.layout) {
@@ -249,7 +249,15 @@ with (scope()) {
   define('input', function() { 
     var arguments = flatten_to_array(arguments);
     var options = shift_options_from_args(arguments);
-    return this[options.type || 'text'](options, arguments);
+    var type = 'text';
+    if (typeof this[options.type] != 'undefined') {
+      type = options.type
+    }
+    else if (typeof this['html5_' + options.type] != 'undefined') {
+      type = 'html5_' + options.type
+    }
+    
+    return this[type](options, arguments);
   });
 
   define('submit', function() {
@@ -267,11 +275,23 @@ with (scope()) {
       define(input_type, function() { 
         var arguments = flatten_to_array(arguments);
         var options = shift_options_from_args(arguments);
-        options.type = input_type;
+        if (!options.type) options.type = input_type;
 
         return element('input', options, arguments);
       });
     }
   );
 
+  // html5_input_types -- prefix the names to avoid namespace issues
+  for_each(
+    'color', 'date', 'datetime', 'datetime-local', 'email', 'month', 'number', 'range', 'search', 'tel', 'time', 'url', 'week',
+    function(input_type) {
+      define('html5_' + input_type, function() { 
+        var arguments = flatten_to_array(arguments);
+        var options = shift_options_from_args(arguments);
+        options.type = input_type;
+        return element('input', options, arguments);
+      });
+    }
+  );
 }
