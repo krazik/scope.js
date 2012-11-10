@@ -173,7 +173,7 @@ with (scope()) {
         stop_event(e);
         real_callback();
       }
-    } else if (options.href && options.href.indexOf('#') == 0) {
+    } else if (configuration.enable_router && options.href && options.href.indexOf('#') == 0) {
       // creating a new function for each link is expensive, so create once and save
       if (!this.a.click_handler) this.a.click_handler = function(e) {
         stop_event(e);

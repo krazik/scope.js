@@ -30,3 +30,11 @@ scope.instance = scope.create_context({
     this[key] = callback;
   }
 });
+
+// confuration
+with (scope()) {
+  define('configuration', {
+    enable_router: false
+  });
+}
+

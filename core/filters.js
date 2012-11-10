@@ -62,6 +62,8 @@ with (scope()) {
     });
   });
   
-  capture_action_if_called_when_filtering('set_route');
+  if (configuration.enable_router) {
+    capture_action_if_called_when_filtering('set_route');
+  }
   capture_action_if_called_when_filtering('render');
 }
