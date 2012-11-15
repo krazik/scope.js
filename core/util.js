@@ -19,7 +19,7 @@ with (scope()) {
     var arguments = [];
     while (stack.length > 0) {
       var obj = stack.shift();
-      if (obj) {
+      if (typeof obj != 'undefined' && obj != null) {
         if ((typeof(obj) == 'object') && obj.concat) {
           // array? just concat
           stack = obj.concat(stack);
