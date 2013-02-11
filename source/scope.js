@@ -38,3 +38,5 @@ with (scope()) {
   });
 }
 
+// console.log for browsers lacking support
+if (!window.console) window.console = { log: function() {} };
